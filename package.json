@@ -12,6 +12,7 @@
     "cheerio",
     "web scraping"
   ],
+  "type": "module",
   "dependencies": {
     "express": "^4.17.1",
     "cheerio": "^1.0.0-rc.3"
