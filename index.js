@@ -1,6 +1,6 @@
-import express from 'express';
-import { get } from 'https';
-import cheerio from 'cheerio';
+import * as express from 'express';
+import * as https from 'https';
+import * as cheerio from 'cheerio';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -9,9 +9,9 @@ app.get('/q=:query', async (req, res) => {
   // Function to perform the web scrape
   async function scrapeSearchResults(query) {
     return new Promise((resolve, reject) => {
-      const searchUrl = new URL(`https://www.bing.com/search?q=${query}`);
+      const searchUrl = new URL(`https://www.bing.com/search?q=${query}`, 'https://www.bing.com');
 
-      get(searchUrl, (searchResponse) => {
+      https.get(searchUrl, (searchResponse) => {
         let rawData = '';
         searchResponse.on('data', (chunk) => {
           rawData += chunk;
@@ -42,6 +42,7 @@ app.get('/q=:query', async (req, res) => {
     });
   }
 
+  // Wait for the results of the web scrape
   try {
     const searchQuery = encodeURIComponent(req.params.query);
     const results = await scrapeSearchResults(searchQuery);
