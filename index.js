@@ -28,13 +28,12 @@ app.get('/search', async (req, res) => {
           $('li.b_algo').each((index, element) => {
             const title = $(element).find('h2').text().trim();
             const link = $(element).find('h2 > a').attr('href');
-            const snippet = $(element).find('p').text().trim();
+            
+            // Capture text content from p, li, span, div, etc.
+            const detailedSnippet = $(element).find('p, li, span, div').text().trim();
 
-            // Adjust the snippet length as per your preference
-            const detailedSnippet = $(element).find('p, li').text().trim();
-
-            if (title && link && snippet && detailedSnippet) {
-              searchResults.push({ title, link, snippet, detailedSnippet });
+            if (title && link && detailedSnippet) {
+              searchResults.push({ title, link, detailedSnippet });
             }
           });
 
