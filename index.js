@@ -5,7 +5,8 @@ import cheerio from 'cheerio';
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.get('/q/:query', async (req, res) => {
+app.get('/search', async (req, res) => {
+  // Function to perform the web scrape
   async function scrapeSearchResults(query) {
     return new Promise((resolve, reject) => {
       const searchUrl = new URL(`https://www.bing.com/search?q=${query}`);
@@ -45,8 +46,9 @@ app.get('/q/:query', async (req, res) => {
     });
   }
 
+  // Wait for the results of the web scrape
   try {
-    const searchQuery = encodeURIComponent(req.params.query);
+    const searchQuery = encodeURIComponent(req.query.q);
     const results = await scrapeSearchResults(searchQuery);
     res.json(results);
   } catch (error) {
