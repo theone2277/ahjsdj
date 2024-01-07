@@ -6,7 +6,6 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.get('/search', async (req, res) => {
-  // Function to perform the web scrape
   async function scrapeSearchResults(query) {
     return new Promise((resolve, reject) => {
       const searchUrl = new URL(`https://www.bing.com/search?q=${query}`);
@@ -28,12 +27,10 @@ app.get('/search', async (req, res) => {
           $('li.b_algo').each((index, element) => {
             const title = $(element).find('h2').text().trim();
             const link = $(element).find('h2 > a').attr('href');
-            
-            // Capture text content from p, li, span, div, etc.
-            const detailedSnippet = $(element).find('p, li, span, div').text().trim();
+            const snippet = $(element).find('p').text().trim();
 
-            if (title && link && detailedSnippet) {
-              searchResults.push({ title, link, detailedSnippet });
+            if (title && link && snippet && detailedSnippet) {
+              searchResults.push({ title, link, snippet });
             }
           });
 
@@ -45,7 +42,6 @@ app.get('/search', async (req, res) => {
     });
   }
 
-  // Wait for the results of the web scrape
   try {
     const searchQuery = encodeURIComponent(req.query.q);
     const results = await scrapeSearchResults(searchQuery);
