@@ -1,4 +1,4 @@
-let words = require('../../words.json');
+let words = require('package.json');
 let rateLimit = {};
 
 export default (req, res) => {
